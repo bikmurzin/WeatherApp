@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct List: Decodable {
     var dt: Date //Дата прогноза, unix, UTC
