@@ -1,12 +1,26 @@
 //
-//  Model.swift
+//  StructsForWeatherData.swift
 //  WeatherApp
 //
-//  Created by User on 27.06.2023.
+//  Created by User on 19.07.2023.
 //
 
 import Foundation
 import UIKit
+
+struct CurrentWeather: Decodable {
+    var weather: [Weather]
+    var main: Main
+    var wind: Wind
+    var dt: Date  //время расчета данных unix, UTC (секунды)
+    var sys: currentSys
+    var timezone: Int    //сдвиг от UTC в секундах
+}
+
+struct FiveDaysWeather: Decodable {
+    var cnt: Int //Количество временных меток, которые будут возвращены в ответе API
+    var list: [List]
+}
 
 struct List: Decodable {
     var dt: Date //Дата прогноза, unix, UTC
@@ -51,7 +65,3 @@ struct Wind: Decodable {
     var deg: Double    //Направление ветра, градусы (метеорологические)
     var gust: Double   //Порыв ветра. Единица измерения по умолчанию: метр/сек, метрическая система: метр/сек, британская система: мили/час
 }
-
-
-
-

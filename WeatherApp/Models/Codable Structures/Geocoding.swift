@@ -7,10 +7,6 @@
 
 import Foundation
 
-struct LocalNames: Decodable {
-    var ru: String
-}
-
 struct Geocoding: Decodable {
     var geocoding: [GeocodingElement]
     
@@ -26,6 +22,10 @@ struct Geocoding: Decodable {
     }
 }
 
+struct LocalNames: Decodable {
+    var ru: String
+}
+
 struct GeocodingElement: Decodable {
     var name: String
     var lat: Double
@@ -38,5 +38,3 @@ struct GeocodingElement: Decodable {
         case localNames = "local_names"
     }
 }
-
-
