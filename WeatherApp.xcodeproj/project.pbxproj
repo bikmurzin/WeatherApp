@@ -28,6 +28,8 @@
 		CEC39BFD2A63E94400CEB92A /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC39BFC2A63E94400CEB92A /* SpinnerViewController.swift */; };
 		CEC39BFF2A680CBE00CEB92A /* StructsForDisplayingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC39BFE2A680CBD00CEB92A /* StructsForDisplayingData.swift */; };
 		CEC39C012A680DB600CEB92A /* StructsForWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC39C002A680DB600CEB92A /* StructsForWeatherData.swift */; };
+		CEC39C032A680F9B00CEB92A /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC39C022A680F9B00CEB92A /* Protocols.swift */; };
+		CEC39C052A680FF100CEB92A /* ProtocolImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC39C042A680FF100CEB92A /* ProtocolImplementation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +55,8 @@
 		CEC39BFC2A63E94400CEB92A /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 		CEC39BFE2A680CBD00CEB92A /* StructsForDisplayingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructsForDisplayingData.swift; sourceTree = "<group>"; };
 		CEC39C002A680DB600CEB92A /* StructsForWeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructsForWeatherData.swift; sourceTree = "<group>"; };
+		CEC39C022A680F9B00CEB92A /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		CEC39C042A680FF100CEB92A /* ProtocolImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolImplementation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				CEA0BC472A4AB40D002E1911 /* ViewController.swift */,
+				CEC39C022A680F9B00CEB92A /* Protocols.swift */,
+				CEC39C042A680FF100CEB92A /* ProtocolImplementation.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -239,6 +245,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEC39C032A680F9B00CEB92A /* Protocols.swift in Sources */,
 				CEC39BF42A5EE87D00CEB92A /* FiveDaysWeatherView.swift in Sources */,
 				CEA0BC652A4AB574002E1911 /* APIData.swift in Sources */,
 				CEC39BFD2A63E94400CEB92A /* SpinnerViewController.swift in Sources */,
@@ -253,6 +260,7 @@
 				CEA0BC442A4AB40D002E1911 /* AppDelegate.swift in Sources */,
 				CEC39C012A680DB600CEB92A /* StructsForWeatherData.swift in Sources */,
 				CEA0BC462A4AB40D002E1911 /* SceneDelegate.swift in Sources */,
+				CEC39C052A680FF100CEB92A /* ProtocolImplementation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
