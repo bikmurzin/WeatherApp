@@ -54,10 +54,4 @@ struct Wind: Decodable {
 
 
 
-// MARK: Struct for displaying data
-struct OneHourWeather {
-    let time: String
-    let temp: String
-    let feelsLike: String
-    let icon: UIImage?
-}
+

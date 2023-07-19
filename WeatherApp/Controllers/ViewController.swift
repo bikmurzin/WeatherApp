@@ -53,7 +53,7 @@ class ViewController: UIViewController{
         return stackView
     }()
     
-    let fiveDaysCollectionView: FiveDaysWeatherView = {
+    let fiveDaysWeatherView: FiveDaysWeatherView = {
         let view = FiveDaysWeatherView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -65,13 +65,13 @@ class ViewController: UIViewController{
         super.viewDidLoad()
         
         weatherData.delegate = self
+        hourlyWeatherView.delegate = self
+        fiveDaysWeatherView.delegate = self
+        
         DispatchQueue.global(qos: .userInitiated).async(flags: .barrier) {
             self.weatherData.fetchGeocoding(city: "Samara")
         }
-        DispatchQueue.global(qos: .userInitiated).async {
-            print("Ответ от геокодинга получен")
-        }
-        view.backgroundColor = UIColor(red: 34/255, green: 113/255, blue: 179/255, alpha: 1)
+        view.backgroundColor = UIColor(red: 31/255, green: 174/255, blue: 233/255, alpha: 1)
         
     }
     
@@ -89,7 +89,7 @@ extension ViewController {
         view.addSubview(weatherDescription)
         view.addSubview(hourlyWeatherView)
         view.addSubview(degreeAndIconStackView)
-        view.addSubview(fiveDaysCollectionView)
+        view.addSubview(fiveDaysWeatherView)
         
         degreeAndIconStackView.addArrangedSubview(currentTemperature)
         degreeAndIconStackView.addArrangedSubview(weatherIcon)
@@ -101,7 +101,7 @@ extension ViewController {
         
         degreeAndIconStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20).isActive = true
         degreeAndIconStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        degreeAndIconStackView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        degreeAndIconStackView.widthAnchor.constraint(equalToConstant: 110).isActive = true
         degreeAndIconStackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         weatherDescription.topAnchor.constraint(equalTo: degreeAndIconStackView.bottomAnchor, constant: 20).isActive = true
@@ -114,10 +114,10 @@ extension ViewController {
         hourlyWeatherView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         hourlyWeatherView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         
-        fiveDaysCollectionView.topAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        fiveDaysCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        fiveDaysCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        fiveDaysCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30).isActive = true
+        fiveDaysWeatherView.topAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        fiveDaysWeatherView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        fiveDaysWeatherView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        fiveDaysWeatherView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30).isActive = true
         
     }
     
@@ -153,7 +153,6 @@ extension ViewController: ViewControllerDelegateForModel {
         DispatchQueue.main.async {
             if let description = self.weatherData.currentWeather?.weather[0].description {
                 self.weatherDescription.text = description
-                print("description: \(description)")
             }
             
             if let icon = self.weatherData.currentWeather?.weather[0].icon {
@@ -164,11 +163,11 @@ extension ViewController: ViewControllerDelegateForModel {
             if let temp = self.weatherData.currentWeather?.main.temp {
                 
                 if temp > 0 {
-                    self.currentTemperature.text = "+\(Int(temp))"
+                    self.currentTemperature.text = "+\(Int(temp))°"
                 } else if temp < 0 {
-                    self.currentTemperature.text = "-\(Int(temp))"  
+                    self.currentTemperature.text = "-\(Int(temp))°"
                 } else {
-                    self.currentTemperature.text = String(Int(temp))
+                    self.currentTemperature.text = "\(Int(temp))°"
                 }
             }
             self.configureView()
@@ -177,23 +176,28 @@ extension ViewController: ViewControllerDelegateForModel {
     
     func showFiveDaysWeather() {
         DispatchQueue.main.async {
-            guard let weather = self.weatherData.fiveDaysWeather else {return}
-            for i in 0..<weather.list.count {
-                print(self.weatherData.getTimeOnly(date: weather.list[i].dt))
-            }
+            self.showHourlyWeather()
+            self.fiveDaysWeatherView.fiveDaysCollectionView.reloadData()
         }
     }
     
     func showHourlyWeather() {
-        
+        hourlyWeatherView.hourlyWeatherCollectionView.reloadData()
     }
+    
 }
 
 //MARK: ViewControllerDelegateForHourlyWeatherView
-extension ViewController: ViewControllerDelegateForHourlyWeatherView {
-    func getHourlyWeather() {
-        <#code#>
+extension ViewController: ViewControllerDelegateForHourlyWeatherView, ViewControllerDelegateForFiveDaysWeatherView {
+    func getFiveDaysWeather() -> [OneDayWeather] {
+        weatherData.fiveDaysWeatherArray
     }
+    
+    
+    func getHourlyWeather() -> [OneHourWeather] {
+        weatherData.hourlyWeatherArray
+    }
+    
 }
 
 // MARK: Protocols
@@ -203,7 +207,10 @@ protocol ViewControllerDelegateForModel: AnyObject {
     func showFiveDaysWeather()
 }
 
-protocol ViewControllerDelegateForHourlyWeatherView {
-    func getHourlyWeather()
+protocol ViewControllerDelegateForHourlyWeatherView: AnyObject {
+    func getHourlyWeather() -> [OneHourWeather]
 }
 
+protocol ViewControllerDelegateForFiveDaysWeatherView: AnyObject {
+    func getFiveDaysWeather() -> [OneDayWeather]
+}

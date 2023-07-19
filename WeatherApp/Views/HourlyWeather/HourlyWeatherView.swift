@@ -10,13 +10,11 @@ import UIKit
 
 class HourlyWeatherView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    // MARK: Временные исходные данные
+    // MARK: Исходные данные для заполнения
+    var hourlyWeatherArray: [OneHourWeather] = []
     
-    let degreeArray = ["+8°","+10°","+9°","+12°","+13°","+15°","+19°","+22°","+18°","+7°"]
-    let hourArray = ["6:00","7:00","8:00","9:00","10:00","11:00","12:00","13:00","14:00","15:00"]
-    let iconArray = ["01d","10d","09d","10d","01d","11d","10d","01d","09d","11d"]
-    
-    
+    // MARK: ViewController Delegate
+    weak var delegate: ViewControllerDelegateForHourlyWeatherView?
     
     // ID ячейки
     let cellId = "HourlyWeatherCell"
@@ -63,6 +61,8 @@ class HourlyWeatherView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         // Регистрация ячейки для collectionView
         hourlyWeatherCollectionView.register(HourlyWeatherCell.self, forCellWithReuseIdentifier: cellId)
         
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -72,7 +72,7 @@ class HourlyWeatherView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     // Размеры ячеек в collectionView
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let width = frame.height / 2
+        let width = frame.height / 1.5
         let height = frame.height
         
         return CGSize(width: width, height: height)
@@ -80,15 +80,20 @@ class HourlyWeatherView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        degreeArray.count
+        if let delegate = delegate {
+            hourlyWeatherArray = delegate.getHourlyWeather()
+        }
+        return hourlyWeatherArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = hourlyWeatherCollectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HourlyWeatherCell
-        cell.degree.text = degreeArray[indexPath.row]
-        cell.hour.text = hourArray[indexPath.row]
-        cell.icon.image = UIImage(named: iconArray[indexPath.row])
+        let hourlyWeather = hourlyWeatherArray[indexPath.row]
+        
+        cell.degree.text = hourlyWeather.temp
+        cell.hour.text = hourlyWeather.time
+        cell.icon.image = UIImage(named: hourlyWeather.icon)
         
         return cell
         

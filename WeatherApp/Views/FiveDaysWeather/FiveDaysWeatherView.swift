@@ -9,18 +9,13 @@ import Foundation
 import UIKit
 
 class FiveDaysWeatherView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+  
     
-    // MARK: Временные исходные данные
-    // Даты
-    let dates = ["14.07","15.07","16.07","17.07","18.07"]
-    // Дни недели
-    let daysOfWeek = ["Пятница", "Суббота", "Воскресенье", "Понедельник", "Вторник"]
-    // Минимальная температура
-    let minTemperature = ["+8°","+10°","+9°","+12°","+13°"]
-    // Максимальная температура
-    let maxTemperature = ["+15°","+22°","+23°","+25°","+19°"]
-    // иконки
-    let icons = ["01d","10d","09d","10d","01d"]
+    
+    // MARK: Исходные данные для заполнения
+    var fiveDaysWeatherArray: [OneDayWeather] = []
+    
+    weak var delegate: ViewControllerDelegateForFiveDaysWeatherView?
     
     // Идентификатор ячейки
     let cellId = "FiveDaysWeatherCell"
@@ -80,16 +75,21 @@ class FiveDaysWeatherView: UIView, UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        dates.count
+        if let delegate = delegate {
+            fiveDaysWeatherArray = delegate.getFiveDaysWeather()
+        }
+        return fiveDaysWeatherArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = fiveDaysCollectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FiveDaysWeatherCell
-        cell.dayOfTheWeek.text = daysOfWeek[indexPath.row]
-        cell.date.text = dates[indexPath.row]
-        cell.icon.image = UIImage(named: icons[indexPath.row])
-        cell.maxTemperature.text = maxTemperature[indexPath.row]
-        cell.minTemperature.text = minTemperature[indexPath.row]
+        let day = fiveDaysWeatherArray[indexPath.row]
+        
+        cell.dayOfTheWeek.text = day.dayOfTheWeek
+        cell.date.text = day.date
+        cell.icon.image = day.icon
+        cell.maxTemperature.text = day.tempMax
+        cell.minTemperature.text = day.tempMin
         
         return cell
     }

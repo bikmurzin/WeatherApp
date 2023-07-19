@@ -91,6 +91,7 @@ class FiveDaysWeatherCell: UICollectionViewCell {
         icon.widthAnchor.constraint(equalToConstant: 50).isActive = true
         icon.heightAnchor.constraint(equalToConstant: height).isActive = true
         
+        
         backgroundColor = .white
     }
     

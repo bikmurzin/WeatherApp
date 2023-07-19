@@ -29,6 +29,7 @@
 		CEC39BF92A5FB3E200CEB92A /* FiveDaysWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC39BF82A5FB3E200CEB92A /* FiveDaysWeatherCell.swift */; };
 		CEC39BFB2A5FB42000CEB92A /* HourlyWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC39BFA2A5FB42000CEB92A /* HourlyWeatherCell.swift */; };
 		CEC39BFD2A63E94400CEB92A /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC39BFC2A63E94400CEB92A /* SpinnerViewController.swift */; };
+		CEC39BFF2A680CBE00CEB92A /* StructsForDisplayingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC39BFE2A680CBD00CEB92A /* StructsForDisplayingData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		CEC39BF82A5FB3E200CEB92A /* FiveDaysWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiveDaysWeatherCell.swift; sourceTree = "<group>"; };
 		CEC39BFA2A5FB42000CEB92A /* HourlyWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyWeatherCell.swift; sourceTree = "<group>"; };
 		CEC39BFC2A63E94400CEB92A /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
+		CEC39BFE2A680CBD00CEB92A /* StructsForDisplayingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructsForDisplayingData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 			children = (
 				CE1412BB2A56C91600655434 /* Codable Structures */,
 				CEA0BC622A4AB4F1002E1911 /* WeatherData.swift */,
+				CEC39BFE2A680CBD00CEB92A /* StructsForDisplayingData.swift */,
 				CEA0BC642A4AB574002E1911 /* APIData.swift */,
 			);
 			path = Models;
@@ -248,6 +251,7 @@
 				CE1412B82A56C88F00655434 /* CurrentWeather.swift in Sources */,
 				CEC39BFD2A63E94400CEB92A /* SpinnerViewController.swift in Sources */,
 				CE1412BA2A56C89F00655434 /* FiveDaysWeather.swift in Sources */,
+				CEC39BFF2A680CBE00CEB92A /* StructsForDisplayingData.swift in Sources */,
 				CEC39BF92A5FB3E200CEB92A /* FiveDaysWeatherCell.swift in Sources */,
 				CEC39BF22A5EE86900CEB92A /* HourlyWeatherView.swift in Sources */,
 				CEA0BC4E2A4AB40D002E1911 /* WeatherApp.xcdatamodeld in Sources */,
