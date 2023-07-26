@@ -14,6 +14,7 @@ struct OneHourWeather {
     let temp: String
     let feelsLike: String
     let icon: String
+    let pod: String
 }
 
 struct OneDayWeather {

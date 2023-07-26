@@ -16,34 +16,34 @@ import Alamofire
 class WeatherData {
     
     // MARK: dictionary for rating of icons
-    var iconRatingDictionary = ["01d": 1,
-                                "01n": 1,
-                                "02d": 2,
-                                "02n": 2,
-                                "03d": 3,
-                                "03n": 3,
-                                "04d": 4,
-                                "04n": 4,
-                                "09d": 9,
-                                "09n": 9,
-                                "10d": 10,
-                                "10n": 10,
-                                "11d": 11,
-                                "11n": 11,
-                                "13d": 13,
-                                "13n": 13,
-                                "50d": 50,
-                                "50n": 50]
-    
-    var iconFromRating =        [1: "01d",
-                                 2: "02d",
-                                 3: "03d",
-                                 4: "04d",
-                                 9: "09d",
-                                 10: "10d",
-                                 11: "11d",
-                                 13: "13d",
-                                 50: "50d"]
+//    var iconRatingDictionary = ["01d": 1,
+//                                "01n": 1,
+//                                "02d": 2,
+//                                "02n": 2,
+//                                "03d": 3,
+//                                "03n": 3,
+//                                "04d": 4,
+//                                "04n": 4,
+//                                "09d": 9,
+//                                "09n": 9,
+//                                "10d": 10,
+//                                "10n": 10,
+//                                "11d": 11,
+//                                "11n": 11,
+//                                "13d": 13,
+//                                "13n": 13,
+//                                "50d": 50,
+//                                "50n": 50]
+//
+//    var iconFromRating =        [1: "01d",
+//                                 2: "02d",
+//                                 3: "03d",
+//                                 4: "04d",
+//                                 9: "09d",
+//                                 10: "10d",
+//                                 11: "11d",
+//                                 13: "13d",
+//                                 50: "50d"]
     
     // Количество элементов, отображаемых в почасовой погоде
     // Выбрано значение 8, т.к. в JSON приходит погода с шагом в 3 часа (8 шагов - это сутки)
@@ -136,7 +136,7 @@ class WeatherData {
 // MARK: processing data to pass it to ViewController
 extension WeatherData {
     
-    func getDataToDisplay(temp: Double?, feelsLike: Double?, icon: String?) -> (String, String, String) {
+    func getDataToDisplay(temp: Double?, feelsLike: Double?, icon: String?, pod: String?) -> (String, String, String, String) {
         var tempString = ""
         if let unwrTemp = temp {
             tempString = "\(Int(unwrTemp))°"
@@ -162,8 +162,15 @@ extension WeatherData {
         } else {
             iconString = "questionmark.square"
         }
+        
+        var podString = ""
+        if let unwrPod = pod {
+            podString = unwrPod
+        } else {
+            podString = "-"
+        }
 
-        return (tempString, feelsLikeString, iconString)
+        return (tempString, feelsLikeString, iconString, podString)
     }
     
     func fillingArrayWithHourlyWeather() {
@@ -178,16 +185,28 @@ extension WeatherData {
             iterationCount = list.count
         }
         
+        hourlyWeatherArray.removeAll()
+        
         for i in 0..<iterationCount {
             let time = getTimeOnly(date: list[i].dt)
             
-            let dataToDisplay = getDataToDisplay(temp: list[i].main.temp, feelsLike: list[i].main.feelsLike, icon: list[i].weather[0].icon)
+            let dataToDisplay = getDataToDisplay(temp: list[i].main.temp, feelsLike: list[i].main.feelsLike, icon: list[i].weather[0].icon, pod: list[i].sys.pod)
             let temp = dataToDisplay.0
             let feelsLike = dataToDisplay.1
             let icon = dataToDisplay.2
+            let pod = dataToDisplay.3
             
-            hourlyWeatherArray.append(OneHourWeather(time: time, temp: temp, feelsLike: feelsLike, icon: icon))
+            hourlyWeatherArray.append(OneHourWeather(time: time, temp: temp, feelsLike: feelsLike, icon: icon, pod: pod))
         }
+    }
+    
+    func findMorningWeather(oneDayWeatherArray: [OneHourWeather]) -> OneHourWeather {
+        for i in 0..<oneDayWeatherArray.count {
+            if oneDayWeatherArray[i].pod == "d" {
+                return oneDayWeatherArray[i]
+            }
+        }
+        return oneDayWeatherArray[0]
     }
     
     func fillingArrayWithFiveDaysWeather() {
@@ -213,29 +232,17 @@ extension WeatherData {
             var minTemp = array[0].temp
             var maxTemp = array[0].temp
             
-            // сюда запишется рейтинг изображения
-            var ratingIcon = 0
-            if let rating = iconRatingDictionary[array[0].icon] {
-                ratingIcon = rating
-            }
-            // сюда запишется имя изображения с худшими погодными условиями за день
-            var worstWeatherIcon = iconFromRating[ratingIcon]!
+            // сюда запишется имя изображения в момент максимальной температуры
+            var icon = array[0].icon
             
             if array.count > 1 {
                 for i in 1..<array.count {
                     if array[i].temp > maxTemp {
                         maxTemp = array[i].temp
+                        icon = array[i].icon
                     }
                     if array[i].temp < minTemp {
                         minTemp = array[i].temp
-                    }
-                    var comparingRatingIcon = ratingIcon
-                    if let rating = iconRatingDictionary[array[i].icon] {
-                        comparingRatingIcon = rating
-                    }
-                    if comparingRatingIcon > ratingIcon {
-                        ratingIcon = comparingRatingIcon
-                        worstWeatherIcon = iconFromRating[ratingIcon]!
                     }
                 }
             }
@@ -247,7 +254,7 @@ extension WeatherData {
                 dayOfTheWeek = day
             }
             
-            fiveDaysWeatherArray.append(OneDayWeather(date: stringDate, tempMin: minTemp, tempMax: maxTemp, icon: UIImage(named: worstWeatherIcon), firstDayIndex: index, dayOfTheWeek: dayOfTheWeek))
+            fiveDaysWeatherArray.append(OneDayWeather(date: stringDate, tempMin: minTemp, tempMax: maxTemp, icon: UIImage(named: icon), firstDayIndex: index, dayOfTheWeek: dayOfTheWeek))
             index = getNextDayIndex(currentDate: date, index: index)
         }   // конец while
     }
@@ -295,12 +302,13 @@ extension WeatherData {
         for i in startIndex..<finishIndex {
             let time = getTimeOnly(date: list[i].dt)
             
-            let dataToDisplay = getDataToDisplay(temp: list[i].main.temp, feelsLike: list[i].main.feelsLike, icon: list[i].weather[0].icon)
+            let dataToDisplay = getDataToDisplay(temp: list[i].main.temp, feelsLike: list[i].main.feelsLike, icon: list[i].weather[0].icon, pod: list[i].sys.pod)
             let temp = dataToDisplay.0
             let feelsLike = dataToDisplay.1
             let icon = dataToDisplay.2
+            let pod = dataToDisplay.3
             
-            oneDayWeatherArray.append(OneHourWeather(time: time, temp: temp, feelsLike: feelsLike, icon: icon))
+            oneDayWeatherArray.append(OneHourWeather(time: time, temp: temp, feelsLike: feelsLike, icon: icon, pod: pod))
         }
         return oneDayWeatherArray
     }

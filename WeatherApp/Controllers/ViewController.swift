@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController{
     
-    var currentCityName: String = "Стерлитамак"
+    var currentCityName: String = "Москва"
     
     //Создаем подкласс SpinnerViewController
     let spinner = SpinnerViewController()
@@ -21,6 +21,7 @@ class ViewController: UIViewController{
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.textAlignment = .center
         return label
     }()
     var currentTemperature: UILabel = {
@@ -35,6 +36,7 @@ class ViewController: UIViewController{
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.textAlignment = .center
         return label
     }()
     var weatherIcon: UIImageView = {
@@ -89,30 +91,37 @@ extension ViewController {
         view.backgroundColor = UIColor(red: 31/255, green: 174/255, blue: 233/255, alpha: 1)
         
         view.addSubview(titleLabel)
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
+            titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 70),
+            titleLabel.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -70),
+            titleLabel.heightAnchor.constraint(equalToConstant: titleLabel.intrinsicContentSize.height)
+        ])
+        
         view.addSubview(currentTemperature)
         view.addSubview(weatherIcon)
-        view.addSubview(weatherDescription)
+                
         view.addSubview(hourlyWeatherView)
         view.addSubview(degreeAndIconStackView)
+        view.addSubview(weatherDescription)
+        NSLayoutConstraint.activate([
+            weatherDescription.topAnchor.constraint(equalTo: degreeAndIconStackView.bottomAnchor, constant: 20),
+            weatherDescription.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 50),
+            weatherDescription.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -50),
+            weatherDescription.heightAnchor.constraint(equalToConstant: weatherDescription.intrinsicContentSize.height)
+        ])
+
         view.addSubview(fiveDaysWeatherView)
         
         degreeAndIconStackView.addArrangedSubview(currentTemperature)
         degreeAndIconStackView.addArrangedSubview(weatherIcon)
-        
-        titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 60).isActive = true
-        titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        titleLabel.widthAnchor.constraint(equalToConstant: titleLabel.intrinsicContentSize.width).isActive = true
-        titleLabel.heightAnchor.constraint(equalToConstant: titleLabel.intrinsicContentSize.height).isActive = true
         
         degreeAndIconStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20).isActive = true
         degreeAndIconStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         degreeAndIconStackView.widthAnchor.constraint(equalToConstant: 110).isActive = true
         degreeAndIconStackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        weatherDescription.topAnchor.constraint(equalTo: degreeAndIconStackView.bottomAnchor, constant: 20).isActive = true
-        weatherDescription.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        weatherDescription.widthAnchor.constraint(equalToConstant: weatherDescription.intrinsicContentSize.width).isActive = true
-        weatherDescription.heightAnchor.constraint(equalToConstant: weatherDescription.intrinsicContentSize.height).isActive = true
+        
         
         hourlyWeatherView.topAnchor.constraint(equalTo: weatherDescription.bottomAnchor, constant: 60).isActive = true
         hourlyWeatherView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
