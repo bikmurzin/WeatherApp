@@ -57,11 +57,11 @@ class WeatherData {
     
     let apiData = APIData()
     
-    var currentWeather: CurrentWeather?
+    private var currentWeather: CurrentWeather?
     
-    var fiveDaysWeather: FiveDaysWeather?
+    private var fiveDaysWeather: FiveDaysWeather?
     
-    var geocoding: Geocoding?
+    private var geocoding: Geocoding?
     
     func getCurrentWeather() -> CurrentWeather? {
         return currentWeather
@@ -81,22 +81,19 @@ class WeatherData {
         
         // запрашиваем эндпоинт
         AF.request(apiData.currentWeatherURL, parameters: parameters)
-        
-        // проверяем ответ, гарантируя, что ответ возвращает код состояния HTTP в диапазоне 200-299
+            // проверяем ответ, гарантируя, что ответ возвращает код состояния HTTP в диапазоне 200-299
             .validate()
-        
-        // декодируем ответ в модель данных
+            // декодируем ответ в модель данных
             .responseDecodable(of: CurrentWeather.self, queue: DispatchQueue.global(qos: .userInitiated)) { (response) in
-                
-                guard let weather = response.value else {return}
+                guard let weather = response.value else {
+                    print("Не удалось распарсить")
+                    return
+                }
                 self.currentWeather = weather
-                
                 if let delegate = self.delegate {
                     delegate.showCurrentWeather()
                 }
-                
             }
-        
     }
     
     func fetchFiveDaysWeather(latitude: Double, longitude: Double) {
@@ -108,7 +105,7 @@ class WeatherData {
                     return
                 }
                 self.fiveDaysWeather = fiveDaysWeather
-                
+//                print(self.fiveDaysWeather)
                 self.fillingArrayWithHourlyWeather()
                 self.fillingArrayWithFiveDaysWeather()
                 
@@ -128,6 +125,7 @@ class WeatherData {
                     return
                 }
                 self.geocoding = geocoding
+
                 self.fetchCurrentWeather(latitude: geocoding.geocoding[0].lat, longitude: geocoding.geocoding[0].lon)
                 self.fetchFiveDaysWeather(latitude: geocoding.geocoding[0].lat, longitude: geocoding.geocoding[0].lon)
             }
@@ -137,6 +135,36 @@ class WeatherData {
 
 // MARK: processing data to pass it to ViewController
 extension WeatherData {
+    
+    func getDataToDisplay(temp: Double?, feelsLike: Double?, icon: String?) -> (String, String, String) {
+        var tempString = ""
+        if let unwrTemp = temp {
+            tempString = "\(Int(unwrTemp))°"
+            if unwrTemp > 0 {
+                tempString = "+\(tempString)"
+            } else if unwrTemp < 0 {
+                tempString = "-\(tempString)"
+            }
+        } else {
+            tempString = "-"
+        }
+        
+        var feelsLikeString = ""
+        if let unwrFeelsLike = feelsLike {
+            feelsLikeString = String(Int(unwrFeelsLike))
+        } else {
+            feelsLikeString = "-"
+        }
+        
+        var iconString = ""
+        if let unwrIcon = icon {
+            iconString = unwrIcon
+        } else {
+            iconString = "questionmark.square"
+        }
+
+        return (tempString, feelsLikeString, iconString)
+    }
     
     func fillingArrayWithHourlyWeather() {
         
@@ -150,24 +178,16 @@ extension WeatherData {
             iterationCount = list.count
         }
         
-            for i in 0..<iterationCount {
-                
-                let time = getTimeOnly(date: list[i].dt)
-                // удаляем дробную часть и переводим в String
-                
-                let temp = Int(list[i].main.temp)
-                var tempString = "\(temp)°"
-                if temp > 0 {
-                    tempString = "+\(tempString)"
-                } else if temp < 0 {
-                    tempString = "-\(tempString)"
-                }
-                
-                let feelsLike = String(Int(list[i].main.feelsLike))
-                let icon = list[i].weather[0].icon
-                hourlyWeatherArray.append(OneHourWeather(time: time, temp: tempString, feelsLike: feelsLike, icon: icon))
-                
-            }
+        for i in 0..<iterationCount {
+            let time = getTimeOnly(date: list[i].dt)
+            
+            let dataToDisplay = getDataToDisplay(temp: list[i].main.temp, feelsLike: list[i].main.feelsLike, icon: list[i].weather[0].icon)
+            let temp = dataToDisplay.0
+            let feelsLike = dataToDisplay.1
+            let icon = dataToDisplay.2
+            
+            hourlyWeatherArray.append(OneHourWeather(time: time, temp: temp, feelsLike: feelsLike, icon: icon))
+        }
     }
     
     func fillingArrayWithFiveDaysWeather() {
@@ -190,10 +210,8 @@ extension WeatherData {
             let date = getDateWithoutYearAndHour(date: list[index].dt)
             
             //iconRatingDictionary
-            
             var minTemp = array[0].temp
             var maxTemp = array[0].temp
-            
             
             // сюда запишется рейтинг изображения
             var ratingIcon = 0
@@ -276,23 +294,14 @@ extension WeatherData {
         
         for i in startIndex..<finishIndex {
             let time = getTimeOnly(date: list[i].dt)
-            // удаляем дробную часть и переводим в String
             
-            let temp = Int(list[i].main.temp)
-            var tempString = "\(temp)°"
-            if temp > 0 {
-                tempString = "+\(tempString)"
-            } else if temp < 0 {
-                tempString = "-\(tempString)"
-            }
+            let dataToDisplay = getDataToDisplay(temp: list[i].main.temp, feelsLike: list[i].main.feelsLike, icon: list[i].weather[0].icon)
+            let temp = dataToDisplay.0
+            let feelsLike = dataToDisplay.1
+            let icon = dataToDisplay.2
             
-            let feelsLike = String(Int(list[i].main.feelsLike))
-            let icon = list[i].weather[0].icon
-            
-            
-            oneDayWeatherArray.append(OneHourWeather(time: time, temp: tempString, feelsLike: feelsLike, icon: icon))
+            oneDayWeatherArray.append(OneHourWeather(time: time, temp: temp, feelsLike: feelsLike, icon: icon))
         }
-        
         return oneDayWeatherArray
     }
     

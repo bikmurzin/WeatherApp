@@ -17,16 +17,17 @@ extension ViewController: ViewControllerDelegateForModel {
         //        weatherIcon.image = UIImage(named: "11d")
         //        weatherDescription.text = "Гроза"
         DispatchQueue.main.async {
-            if let description = self.weatherData.currentWeather?.weather[0].description {
+            let currentWeather = self.weatherData.getCurrentWeather()
+            if let description = currentWeather?.weather[0].description {
                 self.weatherDescription.text = description
             }
             
-            if let icon = self.weatherData.currentWeather?.weather[0].icon {
+            if let icon = currentWeather?.weather[0].icon {
                 self.weatherIcon.image = UIImage(named: icon)
             }
             
-            self.titleLabel.text = "Самара"
-            if let temp = self.weatherData.currentWeather?.main.temp {
+//            self.titleLabel.text = "Самара"
+            if let temp = currentWeather?.main.temp {
                 
                 if temp > 0 {
                     self.currentTemperature.text = "+\(Int(temp))°"
@@ -54,7 +55,14 @@ extension ViewController: ViewControllerDelegateForModel {
 }
 
 //MARK: ViewControllerDelegateForHourlyWeatherView
-extension ViewController: ViewControllerDelegateForHourlyWeatherView, ViewControllerDelegateForFiveDaysWeatherView {
+extension ViewController: ViewControllerDelegateForHourlyWeatherView, ViewControllerDelegateForFiveDaysWeatherView, ViewControllerDelegateForCitySelection {
+    
+    func changeCity(newCity: City) {
+        print(newCity.eng)
+        currentCityName = newCity.rus
+        fetchWeatherForCity()
+    }
+    
     func getFiveDaysWeather() -> [OneDayWeather] {
         weatherData.fiveDaysWeatherArray
     }

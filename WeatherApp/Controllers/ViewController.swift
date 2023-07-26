@@ -9,6 +9,8 @@ import UIKit
 
 class ViewController: UIViewController{
     
+    var currentCityName: String = "Стерлитамак"
+    
     //Создаем подкласс SpinnerViewController
     let spinner = SpinnerViewController()
     
@@ -59,7 +61,6 @@ class ViewController: UIViewController{
         return view
     }()
     
-    
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,20 +69,24 @@ class ViewController: UIViewController{
         hourlyWeatherView.delegate = self
         fiveDaysWeatherView.delegate = self
         
-        DispatchQueue.global(qos: .userInitiated).async(flags: .barrier) {
-            self.weatherData.fetchGeocoding(city: "Samara")
-        }
-        view.backgroundColor = UIColor(red: 31/255, green: 174/255, blue: 233/255, alpha: 1)
-        
+        fetchWeatherForCity()
     }
     
+    func fetchWeatherForCity() {
+        if let cityName = APIData.directoryOfCities[currentCityName] {
+            self.weatherData.fetchGeocoding(city: cityName)
+        }
+        titleLabel.text = currentCityName
+    }
 }
 
 
-// MARK: Configure main screen
+// MARK: Configuring view
 extension ViewController {
         
     func configureView() {
+        
+        view.backgroundColor = UIColor(red: 31/255, green: 174/255, blue: 233/255, alpha: 1)
         
         view.addSubview(titleLabel)
         view.addSubview(currentTemperature)
@@ -94,7 +99,7 @@ extension ViewController {
         degreeAndIconStackView.addArrangedSubview(currentTemperature)
         degreeAndIconStackView.addArrangedSubview(weatherIcon)
         
-        titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 60).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: titleLabel.intrinsicContentSize.width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: titleLabel.intrinsicContentSize.height).isActive = true
@@ -118,6 +123,35 @@ extension ViewController {
         fiveDaysWeatherView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         fiveDaysWeatherView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         fiveDaysWeatherView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30).isActive = true
+        
+        //rectangle.and.pencil.and.ellipsis
+        let changeCityButton = createCustomButton(imageName: "rectangle.and.pencil.and.ellipsis", selector: #selector(changeCityButtonTapped))
+        
+        navigationItem.leftBarButtonItem = changeCityButton
+    }
+    
+    func createCustomButton(imageName: String, selector: Selector) -> UIBarButtonItem {
+        
+        let button = UIButton(type: .system)
+        button.setImage(
+            UIImage(systemName: imageName)?.withRenderingMode(.alwaysTemplate),
+            for: .normal
+        )
+        button.tintColor = .white
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentVerticalAlignment = .fill
+        button.contentHorizontalAlignment = .fill
+        button.addTarget(self, action: selector, for: .touchUpInside)
+        
+        let menuBarItem = UIBarButtonItem(customView: button)
+        return menuBarItem
+    }
+    
+    @objc private func changeCityButtonTapped() {
+        print("changeCityButtonTapped")
+        let citySelectionViewController = CitySelectionViewController()
+        citySelectionViewController.delegate = self
+        navigationController?.pushViewController(citySelectionViewController, animated: true)
         
     }
     

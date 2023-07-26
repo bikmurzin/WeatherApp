@@ -21,3 +21,7 @@ protocol ViewControllerDelegateForHourlyWeatherView: AnyObject {
 protocol ViewControllerDelegateForFiveDaysWeatherView: AnyObject {
     func getFiveDaysWeather() -> [OneDayWeather]
 }
+
+protocol ViewControllerDelegateForCitySelection: AnyObject {
+    func changeCity(newCity: City)
+}
