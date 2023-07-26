@@ -14,6 +14,8 @@ class CityNameCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        backgroundColor = .white
+        
         addSubview(cityNameLabel)
         cityNameLabel.translatesAutoresizingMaskIntoConstraints = false
         cityNameLabel.font = UIFont.boldSystemFont(ofSize: 14)
@@ -21,6 +23,7 @@ class CityNameCell: UITableViewCell {
             cityNameLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
             cityNameLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
+        cityNameLabel.textColor = .black
     }
     
     required init?(coder: NSCoder) {

@@ -107,6 +107,7 @@ extension CitySelectionViewController {
             tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
+        tableView.backgroundColor = .white
     }
 }
 
