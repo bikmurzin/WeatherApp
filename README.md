@@ -1,11 +1,22 @@
 #  WeatherApp
 
+Приветствую!
 
-![76423E70-3462-46D8-8C17-C174C985F6B3](https://github.com/bikmurzin/WeatherApp/assets/51128795/5064fa52-9994-4569-ad63-a079b3cd56d4)
-![3FDF6F99-5CCD-4FF2-B183-68889FE0FE2E](https://github.com/bikmurzin/WeatherApp/assets/51128795/c8a031dc-0cc7-49a3-97cb-19b30d3bcd6a)
-
-
+Данное приложение написано в учебных целях.
 
 
-![Uploading 0FB00EEC-D273-4310-BB72-6EC574A6F64E.png…]()
-![Uploading 669785D5-281D-43CD-9ECF-5391FBF21BAA.png…]()
+# # О приложении
+Приложение отображает текущую погоду, погоду по часам и погоду на ближайшие 5 дней в выбранном городе.
+Для получения данных о погоде используется API OpenWheatherMap
+Для сетевых запросов используется библиотека Alamofire
+
+# # Скриншоты приложения
+
+
+![Главный экран](https://github.com/bikmurzin/WeatherApp/assets/51128795/3f2f29b6-8792-427c-a5f1-a0dcfd166e44)
+
+![Экран со списком городов](https://github.com/bikmurzin/WeatherApp/assets/51128795/5a4b778c-55c3-4c93-a297-4df55ede3bd7)
+
+![Поиск города](https://github.com/bikmurzin/WeatherApp/assets/51128795/e77fba89-b9d9-4f0c-b6ed-26ec8b811e6e)
+
+![Отображение погоды в выбранном городе](https://github.com/bikmurzin/WeatherApp/assets/51128795/b30dfce6-a79e-41d5-aeff-f601fde4fa13)
