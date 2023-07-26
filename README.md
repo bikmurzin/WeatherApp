@@ -10,8 +10,9 @@
 
 ## Скриншоты приложения
 
-<img src="[path/to/screenshot.png](https://github.com/bikmurzin/WeatherApp/assets/51128795/3f2f29b6-8792-427c-a5f1-a0dcfd166e44)" width="500">
 
+
+<img src="https://github.com/bikmurzin/WeatherApp/assets/51128795/3f2f29b6-8792-427c-a5f1-a0dcfd166e44" width="500">
 
 ![Экран со списком городов](https://github.com/bikmurzin/WeatherApp/assets/51128795/5a4b778c-55c3-4c93-a297-4df55ede3bd7)
 
