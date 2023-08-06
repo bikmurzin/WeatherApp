@@ -144,7 +144,6 @@
 			children = (
 				CEC39BF62A5FB3A100CEB92A /* FiveDaysWeather */,
 				CEC39BF52A5FB39500CEB92A /* HourlyWeather */,
-				CEA0BC512A4AB40F002E1911 /* LaunchScreen.storyboard */,
 				CEC39BFC2A63E94400CEB92A /* SpinnerViewController.swift */,
 				70FF6C8D2A7109E000D74419 /* CityNameCell.swift */,
 			);
@@ -158,6 +157,7 @@
 				CEC39C062A692D5600CEB92A /* CitySelectionViewController.swift */,
 				CEC39C022A680F9B00CEB92A /* Protocols.swift */,
 				CEC39C042A680FF100CEB92A /* ProtocolImplementation.swift */,
+				CEA0BC512A4AB40F002E1911 /* LaunchScreen.storyboard */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
