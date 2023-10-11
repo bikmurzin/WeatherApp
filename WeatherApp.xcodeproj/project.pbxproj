@@ -16,7 +16,6 @@
 		CE1412B62A568A0900655434 /* Geocoding API in Resources */ = {isa = PBXBuildFile; fileRef = CE1412B52A568A0900655434 /* Geocoding API */; };
 		CE1412BD2A56C94000655434 /* Geocoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1412BC2A56C94000655434 /* Geocoding.swift */; };
 		CEA0BC442A4AB40D002E1911 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA0BC432A4AB40D002E1911 /* AppDelegate.swift */; };
-		CEA0BC462A4AB40D002E1911 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA0BC452A4AB40D002E1911 /* SceneDelegate.swift */; };
 		CEA0BC482A4AB40D002E1911 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA0BC472A4AB40D002E1911 /* ViewController.swift */; };
 		CEA0BC4E2A4AB40D002E1911 /* WeatherApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CEA0BC4C2A4AB40D002E1911 /* WeatherApp.xcdatamodeld */; };
 		CEA0BC502A4AB40F002E1911 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEA0BC4F2A4AB40F002E1911 /* Assets.xcassets */; };
@@ -48,7 +47,6 @@
 		CE1412BC2A56C94000655434 /* Geocoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geocoding.swift; sourceTree = "<group>"; };
 		CEA0BC402A4AB40D002E1911 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEA0BC432A4AB40D002E1911 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CEA0BC452A4AB40D002E1911 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CEA0BC472A4AB40D002E1911 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CEA0BC4D2A4AB40D002E1911 /* WeatherApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WeatherApp.xcdatamodel; sourceTree = "<group>"; };
 		CEA0BC4F2A4AB40F002E1911 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -81,6 +79,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		70F9B8342AD6ED3000BE24F4 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				CE1412AF2A55EE7100655434 /* currentWeather */,
+				CE1412B12A55FF5900655434 /* 5 days weather */,
+				CE1412B32A56037000655434 /* Поддерживаемые языки */,
+				CE1412B52A568A0900655434 /* Geocoding API */,
+			);
+			path = Documentation;
+			sourceTree = "<group>";
+		};
 		CE1412BB2A56C91600655434 /* Codable Structures */ = {
 			isa = PBXGroup;
 			children = (
@@ -110,18 +119,14 @@
 		CEA0BC422A4AB40D002E1911 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				70F9B8342AD6ED3000BE24F4 /* Documentation */,
 				CEA0BC432A4AB40D002E1911 /* AppDelegate.swift */,
-				CEA0BC452A4AB40D002E1911 /* SceneDelegate.swift */,
 				CEA0BC4F2A4AB40F002E1911 /* Assets.xcassets */,
 				CEA0BC4C2A4AB40D002E1911 /* WeatherApp.xcdatamodeld */,
 				CEA0BC542A4AB40F002E1911 /* Info.plist */,
 				CEA0BC602A4AB47A002E1911 /* Controllers */,
 				CEA0BC5F2A4AB473002E1911 /* Views */,
 				CEA0BC5E2A4AB469002E1911 /* Models */,
-				CE1412AF2A55EE7100655434 /* currentWeather */,
-				CE1412B12A55FF5900655434 /* 5 days weather */,
-				CE1412B32A56037000655434 /* Поддерживаемые языки */,
-				CE1412B52A568A0900655434 /* Geocoding API */,
 			);
 			path = WeatherApp;
 			sourceTree = "<group>";
@@ -278,7 +283,6 @@
 				CEC39BFB2A5FB42000CEB92A /* HourlyWeatherCell.swift in Sources */,
 				CEA0BC442A4AB40D002E1911 /* AppDelegate.swift in Sources */,
 				CEC39C012A680DB600CEB92A /* StructsForWeatherData.swift in Sources */,
-				CEA0BC462A4AB40D002E1911 /* SceneDelegate.swift in Sources */,
 				70FF6C8C2A7104B200D74419 /* City.swift in Sources */,
 				CEC39C052A680FF100CEB92A /* ProtocolImplementation.swift in Sources */,
 			);
