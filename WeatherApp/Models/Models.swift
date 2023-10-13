@@ -8,16 +8,16 @@
 import Foundation
 import UIKit
 
-struct CurrentWeather: Decodable {
+struct CurrentWeatherModel: Decodable {
     var weather: [Weather]
     var main: Main
     var wind: Wind
     var dt: Date  //время расчета данных unix, UTC (секунды)
-    var sys: currentSys
+    var sys: CurrentWeatherSys
     var timezone: Int    //сдвиг от UTC в секундах
 }
 
-struct FiveDaysWeather: Decodable {
+struct WeekWeatherModel: Decodable {
     var cnt: Int //Количество временных меток, которые будут возвращены в ответе API
     var list: [List]
 }
@@ -28,16 +28,16 @@ struct List: Decodable {
     var weather: [Weather]
     var wind: Wind
     var pop: Double //вероятность осадков
-    var sys: fiveDaysSys //часть суток (n- ночь, d - день)
+    var sys: WeekWeatherSys //часть суток (n- ночь, d - день)
     var dt_txt: String? //Прогнозируемое время данных, ISO, UTC
 }
 
-struct currentSys: Decodable {
+struct CurrentWeatherSys: Decodable {
     var sunrise: Int? //Время восхода солнца, unix, UTC
     var sunset: Int?  //Время захода солнца, unix, UTC
 }
 
-struct fiveDaysSys: Decodable {
+struct WeekWeatherSys: Decodable {
     var pod: String?   //часть суток (n- ночь, d - день)
 }
 
