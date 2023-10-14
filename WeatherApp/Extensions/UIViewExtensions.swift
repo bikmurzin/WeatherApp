@@ -26,4 +26,10 @@ extension UIView {
         self.layer.shadowOffset = .zero
         self.layer.shadowRadius = 10
     }
+    
+    func addSubviews(_ subviews: [UIView]) {
+        for subview in subviews {
+            self.addSubview(subview)
+        }
+    }
 }

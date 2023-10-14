@@ -13,12 +13,12 @@ import Foundation
 
 class MainViewModel {
     // Data Sources:
-    var currentWeatherDataSource: Observable<CurrentWeatherViewModel> = Observable(nil)
-    var hourlyWeatherDataSource: Observable<HourlyWeatherViewModel> = Observable(nil)
-    var weekWeatherDataSource: Observable<WeekWeatherViewModel> = Observable(nil)
+    private (set) var currentWeatherDataSource: Observable<CurrentWeatherViewModel> = Observable(nil)
+    private (set) var weekWeatherDataSource: Observable<WeekWeatherViewModel> = Observable(nil)
+    private (set) var weekForecastDataSource: [OneHourForecast] = []
     
     // Variables:
-    var isLoading: Observable<Bool> = Observable(false)
+    private (set) var isLoading: Observable<Bool> = Observable(false)
     var isCurrentWeatherLoading = false
     var isWeekWeatherLoading = false
     
@@ -37,9 +37,8 @@ class MainViewModel {
         let urlString = "\(NetworkConstant.shared.currentWeatherAddress)?appid=\(NetworkConstant.shared.apiKey)&lat=\(lat)&lon=\(lon)&units=metric&lang=ru"
         APICaller.makeRequest(urlString: urlString) {[weak self] (result: Result<CurrentWeatherModel, NetworkError>) in
             guard let self = self else { return }
-            self.isCurrentWeatherLoading = false
-            self.isLoading.value = (self.isCurrentWeatherLoading || self.isWeekWeatherLoading)
-            
+            isCurrentWeatherLoading = false
+            isLoading.value = isCurrentWeatherLoading || isWeekWeatherLoading
             switch result {
             case .success(let data):
                 self.currentWeatherDataSource.value = CurrentWeatherViewModel(currentWeather: data)
@@ -59,15 +58,45 @@ class MainViewModel {
         let urlString = "\(NetworkConstant.shared.weekWeatherAddress)?appid=\(NetworkConstant.shared.apiKey)&lat=\(lat)&lon=\(lon)&units=metric&lang=ru"
         APICaller.makeRequest(urlString: urlString) {[weak self] (result: Result<WeekWeatherModel, NetworkError>) in
             guard let self = self else { return }
-            self.isWeekWeatherLoading = false
-            self.isLoading.value = (self.isCurrentWeatherLoading || self.isWeekWeatherLoading)
-            
+            isWeekWeatherLoading = false
+            isLoading.value = isCurrentWeatherLoading || isWeekWeatherLoading
             switch result {
             case .success(let data):
-                self.weekWeatherDataSource.value = WeekWeatherViewModel(weekWeather: data)
+                self.weekForecastDataSource = data.list
+                mapCellData()
             case .failure(let error):
                 print(error)
             }
         }
+    }
+    
+    private func mapCellData() {
+        var currentDate: Date? = nil
+        var allDates: [Date] = []
+        for oneHourForecast in weekForecastDataSource {
+            if let unwrCurrentDate = currentDate {
+                if !Calendar.current.isDate(unwrCurrentDate, inSameDayAs: oneHourForecast.dt) {
+                    currentDate = oneHourForecast.dt
+                    allDates.append(unwrCurrentDate)
+                }
+            } else {
+                currentDate = oneHourForecast.dt
+                allDates.append(oneHourForecast.dt)
+            }
+        }
+        var tmpWeekWeatherCellDataSource: [DailyWeatherCellViewModel] = []
+//        print("allDates.count: \(allDates.count)")
+//        print("weekForecastDataSource.count: \(weekForecastDataSource.count)")
+        for date in allDates {
+            let tmpOneHourForecastArray = weekForecastDataSource.filter({ Calendar.current.isDate($0.dt, inSameDayAs: date) })
+//            print("tmpOneHourForecastArray.count: \(tmpOneHourForecastArray.count)")
+            tmpWeekWeatherCellDataSource.append(DailyWeatherCellViewModel(for: tmpOneHourForecastArray))
+            
+        }
+        
+        weekWeatherDataSource.value = WeekWeatherViewModel(dataSource: tmpWeekWeatherCellDataSource)
+        print("tmpWeekWeatherCellDataSource[0].dayOfWeek: \(tmpWeekWeatherCellDataSource[0].dayOfWeek)")
+        print("weekWeatherDataSource.value?.dataSource[0].dayOfWeek: \(weekWeatherDataSource.value?.dataSource[0].dayOfWeek)")
+//        print("weekWeatherDataSource.value?.dataSource: \(weekWeatherDataSource.value?.dataSource)")
     }
 }

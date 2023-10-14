@@ -19,11 +19,7 @@ class CurrentWeatherViewModel {
     
     init(currentWeather: CurrentWeatherModel) {
         self.cityName = "Москва"
-        if let currentTemp = currentWeather.main.temp {
-            self.currentTemp = String(currentTemp)
-        } else {
-            self.currentTemp = "--"
-        }
+        self.currentTemp = String(currentWeather.main.temp)
         self.imageName = currentWeather.weather[0].icon ?? ""
         self.weatherDescription = currentWeather.weather[0].description ?? "--"
     }

@@ -19,10 +19,10 @@ struct CurrentWeatherModel: Decodable {
 
 struct WeekWeatherModel: Decodable {
     var cnt: Int //Количество временных меток, которые будут возвращены в ответе API
-    var list: [List]
+    var list: [OneHourForecast]
 }
 
-struct List: Decodable {
+struct OneHourForecast: Decodable {
     var dt: Date //Дата прогноза, unix, UTC
     var main: Main
     var weather: [Weather]
@@ -42,7 +42,7 @@ struct WeekWeatherSys: Decodable {
 }
 
 struct Main: Decodable {
-    var temp: Double?   //Температура
+    var temp: Double   //Температура
     var feelsLike: Double? //Ощущается как
     var humidity: Double?   //Влажность, %
     var grndLevel: Double? //Атмосферное давление на уровне земли

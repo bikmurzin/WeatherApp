@@ -18,6 +18,7 @@ class MainViewController: UIViewController {
     
     // Views:
     var currentWeatherView = UIView()
+    var weekWeatherView = WeekWeatherView(frame: CGRect.zero)
     var activityIndicator = UIActivityIndicatorView()
     
     // Variables:
@@ -36,6 +37,7 @@ class MainViewController: UIViewController {
     func configView() {
         view.backgroundColor = .mainBackgroundColor
         setupCurrentWeatherView()
+        setupWeekWeatherView()
     }
     
     func bindViewModel() {
@@ -58,6 +60,15 @@ class MainViewController: UIViewController {
             }
 //            self.currentWeatherViewModel = currentWeather
             setupCurrentWeatherView()
+            
+        }
+        
+        viewModel.weekWeatherDataSource.bind { [weak self] weekWeather in
+            guard let self = self, let weekWeather = weekWeather else {
+                return
+            }
+//            setupWeekWeatherView()
+            updateWeekWeatherView()
         }
     }
 }
